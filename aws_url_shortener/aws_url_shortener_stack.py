@@ -1,13 +1,10 @@
-from aws_cdk import (
+from aws_cdk import (  # aws_certificatemanager,; aws_route53,; aws_route53_targets,
     Duration,
+    RemovalPolicy,
     Stack,
     aws_apigateway,
-    # aws_certificatemanager,
-    aws_lambda,
-    # aws_route53,
-    # aws_route53_targets,
     aws_dynamodb,
-    RemovalPolicy
+    aws_lambda,
 )
 from constructs import Construct
 
@@ -25,7 +22,7 @@ class UrlShortenerStack(Stack):
             ),
             billing_mode=aws_dynamodb.BillingMode.PAY_PER_REQUEST,
             time_to_live_attribute="expdate",
-            removal_policy=RemovalPolicy.DESTROY
+            removal_policy=RemovalPolicy.DESTROY,
         )
 
         # Defines de Lambda function
