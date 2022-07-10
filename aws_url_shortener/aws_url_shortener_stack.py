@@ -1,4 +1,5 @@
 from aws_cdk import (  # aws_certificatemanager,; aws_route53,; aws_route53_targets,
+    BundlingOptions,
     Duration,
     RemovalPolicy,
     Stack,
@@ -26,10 +27,22 @@ class UrlShortenerStack(Stack):
         )
 
         # Defines de Lambda function
+        bundling = BundlingOptions(
+            image=aws_lambda.Runtime.PYTHON_3_9.bundling_image,
+            command=[
+                "bash",
+                "-c",
+                "pip install --no-cache -r requirements.txt -t /asset-output &&"
+                " cp -au . /asset-output",
+            ],
+        )
+
         handler = aws_lambda.Function(
             self,
             "UrlShortenerFunction",
-            code=aws_lambda.Code.from_asset("./aws_url_shortener/lambda"),
+            code=aws_lambda.Code.from_asset(
+                "./aws_url_shortener/lambda", bundling=bundling
+            ),
             handler="handler.main",
             timeout=Duration.minutes(1),
             runtime=aws_lambda.Runtime.PYTHON_3_9,
