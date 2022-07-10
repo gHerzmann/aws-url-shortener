@@ -1,16 +1,17 @@
 
-# Welcome to your CDK Python project!
+# AWS URL Shortener
 
-You should explore the contents of this project. It demonstrates a CDK app with an instance of a stack (`aws_url_shortener_stack`)
-which contains an Amazon SQS queue that is subscribed to an Amazon SNS topic.
+This is a simple AWS URL shortener created by using AWS CDK in Python. The stack
+is defined inside aws_url_shortener_stack.py file and the the Lambda code is defined inside the
+lambda folder. Currently it uses the folowing AWS services:
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+- API Gateway
+- DynamoDB
+- Lambd Function
 
-This project is set up like a standard Python project.  The initialization process also creates
-a virtualenv within this project, stored under the .venv directory.  To create the virtualenv
-it assumes that there is a `python3` executable in your path with access to the `venv` package.
-If for any reason the automatic creation of the virtualenv fails, you can create the virtualenv
-manually once the init process completes.
+This project was create mainly as a way to experiment with the AWS CDK functionalities.
+
+## Setup
 
 To manually create a virtualenv on MacOS and Linux:
 
@@ -37,29 +38,36 @@ Once the virtualenv is activated, you can install the required dependencies.
 $ pip install -r requirements.txt
 ```
 
-At this point you can now synthesize the CloudFormation template for this code.
+You will also need to install the AWS CDK:
 
 ```
-$ cdk synth
+$ npm install -g aws-cdk
 ```
 
-You can now begin exploring the source code, contained in the hello directory.
-There is also a very trivial test included that can be run like this:
+Dont forget to setup your AWS credentials, CDK will use the same credentials used by AWS CLI, however you can also define it inside of the app.py.
+
+## Deployment
+
+Before the first deployment you'll need to bootstrap your account with the following command:
 
 ```
-$ pytest
+$ cdk bootstrap
 ```
 
-To add additional dependencies, for example other CDK libraries, just add to
-your requirements.txt file and rerun the `pip install -r requirements.txt`
-command.
+Then you'll be able to deploy the stack:
 
-## Useful commands
+```
+$ cdk deploy
+```
 
- * `cdk ls`          list all stacks in the app
- * `cdk synth`       emits the synthesized CloudFormation template
- * `cdk deploy`      deploy this stack to your default AWS account/region
- * `cdk diff`        compare deployed stack with current state
- * `cdk docs`        open CDK documentation
+To remove and clear everything related to the stack on you account:
 
-Enjoy!
+```
+$ cdk destroy
+```
+
+*Tip: If you have multiple profiles configured on your system, you can use the --profile option during the CDK commands to define which one to use, ie.:*
+
+```
+$ cdk deploy --profile default
+```
